@@ -1,53 +1,23 @@
-# matching-between-metamodels-research
-Research repository on matching algorithms between metamodels. Includes implementation of similarity algorithms, quality metrics (recall, precision, F-measure), and related documentation.
+# Matching Between Metamodels Research  
 
-## Environment Setup (`myenv.zip`)
-To reproduce the results and run the provided codes, you can use the preconfigured environment (`myenv.zip`). This environment includes all the required libraries and dependencies. 
+This repository explores matching algorithms between metamodels, focusing on:  
+- Implementation of similarity algorithms.  
+- Evaluation of quality metrics (recall, precision, F-measure).  
+- Detailed analysis and explanation of approaches used.  
 
-### Steps to set up:
-1. Download the `myenv.zip` file from [Google Drive](https://drive.google.com/drive/folders/1KeF7nsY-phHfdd_dWbIEIKFhjp1vqVxv?usp=drive_link).
-2. Extract the contents of `myenv.zip`.
-3. Follow the instructions in the extracted folder to activate and use the environment.
+## Algorithms and Approaches  
 
-### Libraries Used
-The following libraries are used in the codebase and are included in the environment:
+### 1. **Similarity Calculation**  
+- **Simhash:** Used for approximate matching based on hash values of text features.  
+- **Cosine Similarity:** Computes the cosine of the angle between two high-dimensional vectors (e.g., embeddings from `sentence-transformers`).  
 
-- **Core Libraries:**
-  - `json` (for working with JSON data)
-  - `hashlib` (for hashing utilities)
-  - `pandas` (for data manipulation)
-  - `numpy` (for numerical operations)
+### 2. **Natural Language Processing Techniques**  
+- **Tokenization, Lemmatization, and Stopword Removal:** Prepares text data for similarity analysis using `nltk`.  
+- **Embedding Generation:** Utilizes pre-trained models from `sentence-transformers` and `transformers` (e.g., BERT) to generate sentence embeddings.  
 
-- **Natural Language Processing (NLP):**
-  - `nltk` (for tokenization, stopword removal, and lemmatization)
-    - Modules: `word_tokenize`, `stopwords`, `WordNetLemmatizer`
-  - `sentence-transformers` (for sentence embedding and similarity)
-  - `transformers` (for using BERT tokenizer and model)
-  - `torch` (for PyTorch-based operations)
+### 3. **Evaluation Metrics**  
+- **Precision, Recall, and F1-Score:** Evaluates the quality of matching algorithms based on their output compared to the ground truth.  
+  - Libraries: `sklearn.metrics`  
 
-- **Similarity Algorithms:**
-  - `simhash` (for Simhash similarity)
-
-- **Machine Learning:**
-  - `sklearn` (for metrics such as precision, recall, and F-measure)
-  - `scikit-learn` utilities:
-    - `precision_score`
-    - `recall_score`
-    - `f1_score`
-    - `cosine_similarity`
-
-### Additional Notes:
-- Make sure to have `nltk` data downloaded for tokenization and stopword removal. You can do so by running:
-  ```python
-  import nltk
-  nltk.download('punkt')
-  nltk.download('stopwords')
-  nltk.download('wordnet')
-  ```
-- If any library is missing, you can install it using pip. For example:
-  ```bash
-  pip install pandas sentence-transformers transformers torch simhash scikit-learn
-  ```
-
-### Contributing
-You are welcome to fork this repository to improve the performance of the algorithms for better results. Contributions that enhance the implementation or propose new approaches are highly appreciated.
+### Contribution  
+You are welcome to fork this repository to improve the performance of the algorithms for better results. Contributions are encouraged, whether they involve algorithm optimization, additional approaches, or expanded documentation.
