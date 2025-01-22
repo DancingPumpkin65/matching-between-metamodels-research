@@ -17,8 +17,8 @@ true_correspondences = {
 
 # Step 3: Function to compute MinHash similarity
 def compute_minhash_similarity(set1, set2, num_hashes=200):
-    minhash1 = MinHash()
-    minhash2 = MinHash()
+    minhash1 = MinHash(num_perm=num_hashes)
+    minhash2 = MinHash(num_perm=num_hashes)
     
     for element in set1:
         minhash1.update(element.encode('utf8'))
@@ -41,27 +41,23 @@ for i, scrum in enumerate(scrum_elements):
         print(f"{scrum} <-> {prince2}: {similarities[i, j]:.4f}")
 
 # Step 6: Predicted correspondences based on MinHash similarities
-# Let's assume the predicted correspondences are based on the highest similarity score
-predicted_correspondences = {}
-for i, scrum in enumerate(scrum_elements):
-    best_match_idx = np.argmax(similarities[i])
-    predicted_correspondences[scrum] = prince2_elements[best_match_idx]
+predicted_correspondences = {
+    scrum: prince2_elements[np.argmax(similarities[i])]
+    for i, scrum in enumerate(scrum_elements)
+}
 
 # Step 7: Calculate Precision, Recall, F1-Score
-y_true = []
-y_pred = []
+y_true = [
+    1 if true_correspondences.get(scrum) == prince2 else 0
+    for scrum in scrum_elements
+    for prince2 in prince2_elements
+]
 
-# Create binary vectors for true and predicted correspondences
-for scrum in scrum_elements:
-    for prince2 in prince2_elements:
-        if true_correspondences.get(scrum) == prince2:
-            y_true.append(1)
-        else:
-            y_true.append(0)
-        if predicted_correspondences.get(scrum) == prince2:
-            y_pred.append(1)
-        else:
-            y_pred.append(0)
+y_pred = [
+    1 if predicted_correspondences.get(scrum) == prince2 else 0
+    for scrum in scrum_elements
+    for prince2 in prince2_elements
+]
 
 precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='binary')
 
