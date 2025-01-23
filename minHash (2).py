@@ -1,3 +1,4 @@
+import mmh3
 import hashlib
 import pandas as pd
 import numpy as np
@@ -16,25 +17,18 @@ def tokenize(description):
 
 # Function to hash a set of tokens using different hash functions
 def minhash(tokens, num_hashes=200):
-    min_hashes = []
-    for i in range(num_hashes):
-        min_hash = float('inf')
-        for token in tokens:
-            hash_value = int(hashlib.sha256((str(i) + token).encode('utf-8')).hexdigest(), 16)
-            min_hash = min(min_hash, hash_value)
-        min_hashes.append(min_hash)
+    min_hashes = np.full(num_hashes, np.inf)
+    for token in tokens:
+        for i in range(num_hashes):
+            hash_value = mmh3.hash(token, i)
+            min_hashes[i] = min(min_hashes[i], hash_value)
     return min_hashes
 
 # Function to calculate Jaccard similarity between two sets based on MinHash signatures
 def minhash_similarity(set1, set2, num_hashes=200):
     minhash1 = minhash(set1, num_hashes)
     minhash2 = minhash(set2, num_hashes)
-    
-    # Calculate the number of hash functions that give the same result for both sets
-    matches = sum([1 for i in range(num_hashes) if minhash1[i] == minhash2[i]])
-    
-    # Approximate the Jaccard similarity based on the fraction of hash functions that match
-    return matches / num_hashes
+    return np.mean(minhash1 == minhash2)
 
 # Example data
 data = {
